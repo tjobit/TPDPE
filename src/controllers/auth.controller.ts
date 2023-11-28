@@ -31,3 +31,17 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     next(error);
   }
 }
+
+export function refreshToken(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { refreshToken } = req.body;
+
+    controllerUtils.throwIfNotString(refreshToken);
+
+    const loginData = authService.refreshAuthToken(refreshToken);
+
+    res.status(200).json(loginData);
+  } catch (error) {
+    next(error);
+  }
+}

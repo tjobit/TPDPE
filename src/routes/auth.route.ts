@@ -7,6 +7,7 @@ export function getRouter() {
 
   router.post('/register', authController.register, errorMiddleware);
   router.post('/login', authController.login, errorMiddleware);
+  router.post('/refreshToken', authController.refreshToken, errorMiddleware);
 
   return router;
 }
