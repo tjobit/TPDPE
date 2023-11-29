@@ -2,7 +2,6 @@ import { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { AuthenticatedRequest } from '../interfaces/auth.interface'
 import { UserAccount } from '../interfaces/auth.interface'
-import User from '../models/users'
 
 export function authMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     let token = req.headers.authorization;

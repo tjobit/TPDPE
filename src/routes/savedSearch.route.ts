@@ -6,7 +6,9 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 export function getRouter() {
     const router = Router();
 
-    router.get("/savedSearch/:page", authMiddleware, savedSearchController.getSavedSearch, errorMiddleware);
+    router.get("/savedSearches/:page", authMiddleware, savedSearchController.getSavedSearches, errorMiddleware);
+    router.get("/reLaunchSavedSearch/:id", authMiddleware, savedSearchController.reLaunchSavedSearch, errorMiddleware);
+    router.delete("/savedSearch/:id", authMiddleware, savedSearchController.deleteSavedSearch, errorMiddleware);
 
     return router;
 }
