@@ -46,11 +46,7 @@ export async function reLaunchSavedSearch(id: string, connectedUser: UserAccount
 
   if (!search) throw new HttpException(404, "Saved search not found");
 
-  console.log(search.parameters)
-
   const { Etiquette_DPE, Etiquette_GES, "Code_postal_(BAN)": zipcode, Surface_habitable_logement } = search.parameters;
-
-  console.log(Etiquette_DPE, Etiquette_GES, zipcode, Surface_habitable_logement)
 
   const results = await geolocService.getGeoloc(Etiquette_DPE, Etiquette_GES, zipcode, Surface_habitable_logement, connectedUser);
 
