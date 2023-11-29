@@ -6,7 +6,7 @@ export async function getUserProfile(id: string) {
 
   if (!user) throw new HttpException(404, `User not found`);
 
-  const { name, email } = user;
+  const { _id, name, email } = user;
 
-  return { name: name, email: email };
+  return { id: _id, name: name, email: email };
 }

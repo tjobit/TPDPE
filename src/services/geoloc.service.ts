@@ -1,12 +1,15 @@
 import { HttpException } from "../exceptions/HttpException";
+import { UserAccount } from "../interfaces/auth.interface";
 import Dep from "../models/dep";
 import axios from "axios";
+import { saveSearch } from "./savedSearch.service";
 
 export async function getGeoloc(
   dpe: string,
   ges: string,
   zipcode: number,
-  surface: number
+  surface: number,
+  connectedUser: UserAccount
 ) {
   const address = await getAddress(dpe, ges, zipcode, surface);
 
@@ -19,11 +22,14 @@ export async function getGeoloc(
 
     if (response.data.length > 0) {
       geoloc.push({
+        address: address[i],
         latitude: response.data[0].lat,
         longitude: response.data[0].lon,
       });
     }
   }
+
+  await saveSearch(dpe, ges, zipcode, surface, geoloc, connectedUser);
 
   if (geoloc.length === 0) throw new HttpException(204, "No geoloc found");
 
@@ -45,7 +51,7 @@ async function getAddress(
     ],
   });
 
-  if(dep.length === 0) throw new HttpException(204, "No dep found");
+  if (dep.length === 0) throw new HttpException(204, "No dep found");
 
   let address = [];
 
