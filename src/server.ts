@@ -4,6 +4,7 @@ import helmet from "helmet";
 import mongoose from "mongoose";
 import * as authRoute from "./routes/auth.route";
 import * as geolocRoute from "./routes/geoloc.route";
+import * as savedSearchRoute from "./routes/savedSearch.route";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(authRoute.getRouter());
 app.use(geolocRoute.getRouter());
+app.use(savedSearchRoute.getRouter());
 
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
