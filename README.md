@@ -23,7 +23,8 @@ npm run test
 ## Project structure
 
 ```
-├── src
+|── __test__ # Tests
+├── src # Source code
 │   ├── controllers # Controllers for each route
 │   ├── exceptions # Custom exceptions
 │   ├── interfaces # Interfaces for each entity
@@ -33,3 +34,4 @@ npm run test
 │   ├── services # Services for data manipulation and logic
 │   ├── utils # Utils for common functions
 │   └── server.ts # App entry point
+|── .env # Environment variables

@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import * as authRoute from "./routes/auth.route";
 import * as geolocRoute from "./routes/geoloc.route";
 import * as savedSearchRoute from "./routes/savedSearch.route";
+import * as userRoute from "./routes/user.route";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use(authRoute.getRouter());
 app.use(geolocRoute.getRouter());
 app.use(savedSearchRoute.getRouter());
+app.use(userRoute.getRouter());
 
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
