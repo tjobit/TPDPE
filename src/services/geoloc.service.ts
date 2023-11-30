@@ -36,13 +36,13 @@ export async function getGeoloc(
   return geoloc;
 }
 
-async function getAddress(
+export async function getAddress(
   dpe: string,
   ges: string,
   zipcode: number,
   surface: number
 ) {
-  const dep = await Dep.find({
+  const dep = await Dep.find({    
     $and: [
       { Etiquette_DPE: dpe },
       { Etiquette_GES: ges },

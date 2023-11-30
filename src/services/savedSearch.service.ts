@@ -31,6 +31,8 @@ export async function saveSearch(
   user.savedSearches.push(savedSearch);
 
   await user.save();
+
+  return savedSearch;
 }
 
 export async function reLaunchSavedSearch(id: string, connectedUser: UserAccount) {
@@ -60,10 +62,6 @@ export async function getSavedSearches(
   const user = await User.findById(connectedUser.id);
 
   const savedSearches = user.savedSearches;
-
-  if (page > savedSearches.length) {
-    throw new HttpException(204, "Page number too high");
-  }
 
   const pageSavedSearches = savedSearches.slice((page - 1) * 10, page * 10);
 
