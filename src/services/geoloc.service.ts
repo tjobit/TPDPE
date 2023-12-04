@@ -1,15 +1,12 @@
 import { HttpException } from "../exceptions/HttpException";
-import { UserAccount } from "../interfaces/auth.interface";
 import Dep from "../models/dep";
 import axios from "axios";
-import { saveSearch } from "./savedSearch.service";
 
 export async function getGeoloc(
   dpe: string,
   ges: string,
   zipcode: number,
   surface: number,
-  connectedUser: UserAccount
 ) {
   const address = await getAddress(dpe, ges, zipcode, surface);
 
@@ -28,8 +25,6 @@ export async function getGeoloc(
       });
     }
   }
-
-  await saveSearch(dpe, ges, zipcode, surface, geoloc, connectedUser);
 
   if (geoloc.length === 0) throw new HttpException(204, "No geoloc found");
 

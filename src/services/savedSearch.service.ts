@@ -50,9 +50,11 @@ export async function reLaunchSavedSearch(id: string, connectedUser: UserAccount
 
   const { Etiquette_DPE, Etiquette_GES, "Code_postal_(BAN)": zipcode, Surface_habitable_logement } = search.parameters;
 
-  const results = await geolocService.getGeoloc(Etiquette_DPE, Etiquette_GES, zipcode, Surface_habitable_logement, connectedUser);
+  const geoloc = await geolocService.getGeoloc(Etiquette_DPE, Etiquette_GES, zipcode, Surface_habitable_logement);
 
-  return results;
+  search.results = geoloc;
+
+  return search;
 }
 
 export async function getSavedSearches(

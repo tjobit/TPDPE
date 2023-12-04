@@ -70,14 +70,14 @@ describe("Test savedSearch service", () => {
       user.userProfile
     );
 
-    const results = await savedSearchService.reLaunchSavedSearch(
+    const search = await savedSearchService.reLaunchSavedSearch(
       saveSearch.id,
       user.userProfile
     );
 
-    expect(results[0]["address"]).toBe("4 Rue des Cygnes 72000 Le Mans");
-    expect(results[0]["latitude"]).toBe("48.0090975");
-    expect(results[0]["longitude"]).toBe("0.2228414");
+    expect(search["results"][0]["address"]).toBe("4 Rue des Cygnes 72000 Le Mans");
+    expect(search["results"][0]["latitude"]).toBe("48.0090975");
+    expect(search["results"][0]["longitude"]).toBe("0.2228414");
 
     await deleteUser(user.userProfile.id);
   });

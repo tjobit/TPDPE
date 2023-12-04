@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import { AuthenticatedRequest } from "../interfaces/auth.interface";
 import * as controllerUtils from "../utils/controllers.utils";
 import * as geolocService from "../services/geoloc.service";
-
+import { saveSearch } from "../services/savedSearch.service";
 
 interface CustomRequest extends Request {
   user: any;
@@ -28,7 +28,15 @@ export async function getGeoloc(
       dpe,
       ges,
       numZipcode,
+      numSurface
+    );
+
+    await saveSearch(
+      dpe,
+      ges,
+      numZipcode,
       numSurface,
+      geolocData,
       connectedUser
     );
 

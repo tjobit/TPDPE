@@ -5,8 +5,6 @@ import { register } from "../../src/services/auth.service";
 import { deleteUser } from "../../src/services/user.service";
 import * as geolocService from "../../src/services/geoloc.service";
 
-import Dep from "../../src/models/dep";
-
 describe("Test geoloc service", () => {
   beforeAll(async () => {
     dotenv.config();
@@ -41,7 +39,6 @@ describe("Test geoloc service", () => {
       "A",
       72000,
       65,
-      user.userProfile
     );
 
     expect(geoloc.length).toBe(1);
