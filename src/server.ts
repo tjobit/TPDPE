@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import mongoose from "mongoose";
+import cors from "cors";
 import * as authRoute from "./routes/auth.route";
 import * as geolocRoute from "./routes/geoloc.route";
 import * as savedSearchRoute from "./routes/savedSearch.route";
@@ -25,6 +26,7 @@ const app: express.Application = express();
 const port = process.env.PORT || 3030;
 
 app.use(helmet());
+app.use(cors());
 app.use(express.json());
 app.use(authRoute.getRouter());
 app.use(geolocRoute.getRouter());
