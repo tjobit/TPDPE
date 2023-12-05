@@ -20,6 +20,9 @@ npm run dev
 npm run test
 ```
 
+## See api doc (swagger)
+> localhost:3030/docs
+
 ## Project structure
 
 ```
@@ -30,6 +33,7 @@ npm run test
 │   ├── interfaces # Interfaces for each entity
 │   ├── middlewares # Middlewares like error handler or auth
 │   ├── models # Models for each entity
+│   ├── ressources # Different ressources (swagger, mails, etc.)
 │   ├── routes # Routes for requests
 │   ├── services # Services for data manipulation and logic
 │   ├── utils # Utils for common functions

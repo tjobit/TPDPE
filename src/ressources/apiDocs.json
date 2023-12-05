@@ -1,0 +1,492 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TPDPE",
+    "description": "Tp dpe services to locate address with dpe, ges, zipcode, surface",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3030/"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register user",
+        "description": "Add user to database with email, name, password",
+        "operationId": "registerUser",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "body",
+            "description": "name of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "email of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "password of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Auth"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "This email is already registered"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "description": "Log user and get access token with email and password",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "body",
+            "description": "email of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "password of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Auth"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "This email is not registered"
+          },
+          "401": {
+            "description": "Incorrect password"
+          }
+        }
+      }
+    },
+    "/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "refreh user tokens",
+        "description": "Generate access token for a user with his refresh token",
+        "operationId": "refreshUserTokens",
+        "parameters": [
+          {
+            "name": "refreshToken",
+            "in": "body",
+            "description": "refresh token of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "expires": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user",
+        "description": "Delete user and there savedSearches",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "access token of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/savedSearches/{page}": {
+      "get": {
+        "tags": ["SavedSearch"],
+        "summary": "Get saved searches",
+        "description": "Retrieve saved searches for user connected on a specific page",
+        "operationId": "getSavedSearches",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "access token of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page to retrieve savedSearches",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "Etiquette_DPE": {
+                            "type": "string"
+                          },
+                          "Etiquette_GES": {
+                            "type": "string"
+                          },
+                          "Code_postal_(BAN)": {
+                            "type": "number"
+                          },
+                          "Surface_habitable_logement": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "address": {
+                              "type": "string"
+                            },
+                            "latitude": {
+                              "type": "string"
+                            },
+                            "longitude": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reLaunchSavedSearch/{id}": {
+      "get": {
+        "tags": ["SavedSearch"],
+        "summary": "Relaunch saved searches",
+        "description": "Do a search with paramters of a previous search",
+        "operationId": "relaunchSavedSearch",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "access token of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id to retrieve savedSearch",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "parameters": {
+                      "type": "object",
+                      "properties": {
+                        "Etiquette_DPE": {
+                          "type": "string"
+                        },
+                        "Etiquette_GES": {
+                          "type": "string"
+                        },
+                        "Code_postal_(BAN)": {
+                          "type": "number"
+                        },
+                        "Surface_habitable_logement": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "latitude": {
+                            "type": "string"
+                          },
+                          "longitude": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Saved search not fround for this user OR saved search not found"
+          }
+        }
+      }
+    },
+    "/savedSearch/{id}": {
+      "delete": {
+        "tags": ["SavedSearch"],
+        "summary": "delete saved search",
+        "description": "Delete a save search with id and delete from user save search list",
+        "operationId": "deleteSavedSearch",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "access token of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id to retrieve savedSearch",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Saved search not fround for this user OR saved search not found"
+          }
+        }
+      }
+    },
+    "/geoloc/{dpe}/{ges}/{zipcode}/{surface}": {
+      "get": {
+        "tags": ["Geoloc"],
+        "summary": "Get geoloc",
+        "description": "retrieve address, lat and lon with dpe, ges, zipcode and surface",
+        "operationId": "getGeoloc",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "access token of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dpe",
+            "in": "query",
+            "description": "dpe of address",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ges",
+            "in": "query",
+            "description": "ges of address",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "zipcode",
+            "in": "query",
+            "description": "zipcode of address",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "surface",
+            "in": "query",
+            "description": "surface of address",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "latitude": {
+                        "type": "string"
+                      },
+                      "longitude": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No geoloc found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Auth": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "expires": {
+            "type": "number"
+          },
+          "userProfile": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
