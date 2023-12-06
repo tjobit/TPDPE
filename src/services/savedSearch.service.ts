@@ -46,8 +46,6 @@ export async function reLaunchSavedSearch(id: string, connectedUser: UserAccount
 
   const search = await SavedSearches.findById(id);
 
-  if (!search) throw new HttpException(404, "Saved search not found");
-
   const { Etiquette_DPE, Etiquette_GES, "Code_postal_(BAN)": zipcode, Surface_habitable_logement } = search.parameters;
 
   const geoloc = await geolocService.getGeoloc(Etiquette_DPE, Etiquette_GES, zipcode, Surface_habitable_logement);
@@ -96,8 +94,6 @@ export async function deleteSavedSearch(
   await user.save();
 
   const search = await SavedSearches.findById(id);
-
-  if (!search) throw new HttpException(404, "Saved search not found");
 
   await search.delete();
 }

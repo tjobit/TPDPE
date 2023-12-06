@@ -79,8 +79,6 @@ export async function getGeolocLink(link: string) {
     parseInt(geolocInfos.surface)
   );
 
-  console.log(geoloc)
-
   return {
     dpe: geolocInfos.dpe,
     ges: geolocInfos.ges,

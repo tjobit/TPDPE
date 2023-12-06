@@ -20,6 +20,12 @@ npm run dev
 npm run test
 ```
 
+## Run tests with coverage
+
+```bash
+npm run test:coverage
+```
+
 ## See api doc (swagger)
 > localhost:3030/docs
 

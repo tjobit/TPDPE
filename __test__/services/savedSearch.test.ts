@@ -75,11 +75,32 @@ describe("Test savedSearch service", () => {
       user.userProfile
     );
 
-    expect(search["results"][0]["address"]).toBe("4 Rue des Cygnes 72000 Le Mans");
+    expect(search["results"][0]["address"]).toBe(
+      "4 Rue des Cygnes 72000 Le Mans"
+    );
     expect(search["results"][0]["latitude"]).toBe("48.0090975");
     expect(search["results"][0]["longitude"]).toBe("0.2228414");
 
     await deleteUser(user.userProfile.id);
+  });
+
+  it("should not find search for this user", async () => {
+    let user;
+    try {
+      user = await register(
+        "testUnit2",
+        "testUnit2@unit.testUnit",
+        "testUnit2"
+      );
+
+      const search = await savedSearchService.reLaunchSavedSearch(
+        "1testunit",
+        user.userProfile
+      );
+    } catch (error) {
+      await deleteUser(user.userProfile.id);
+      expect(error.message).toBe("Saved search not found for this user");
+    }
   });
 
   it("should be able to get saved searches", async () => {
@@ -104,14 +125,19 @@ describe("Test savedSearch service", () => {
       user.userProfile
     );
 
-    const searches = await savedSearchService.getSavedSearches(1, user.userProfile);
+    const searches = await savedSearchService.getSavedSearches(
+      1,
+      user.userProfile
+    );
 
     expect(searches[0]["parameters"]["Etiquette_DPE"]).toBe("A");
     expect(searches[0]["parameters"]["Etiquette_GES"]).toBe("A");
     expect(searches[0]["parameters"]["Code_postal_(BAN)"]).toBe(72000);
     expect(searches[0]["parameters"]["Surface_habitable_logement"]).toBe(65);
-    
-    expect(searches[0]["results"][0]["address"]).toBe("4 Rue des Cygnes 72000 Le Mans");
+
+    expect(searches[0]["results"][0]["address"]).toBe(
+      "4 Rue des Cygnes 72000 Le Mans"
+    );
     expect(searches[0]["results"][0]["latitude"]).toBe("48.0090975");
     expect(searches[0]["results"][0]["longitude"]).toBe("0.2228414");
 
@@ -140,16 +166,41 @@ describe("Test savedSearch service", () => {
       user.userProfile
     );
 
-    const searches = await savedSearchService.getSavedSearches(1, user.userProfile);
+    const searches = await savedSearchService.getSavedSearches(
+      1,
+      user.userProfile
+    );
 
     expect(searches.length).toBe(1);
 
     await savedSearchService.deleteSavedSearch(saveSearch.id, user.userProfile);
 
-    const searches2 = await savedSearchService.getSavedSearches(1, user.userProfile);
+    const searches2 = await savedSearchService.getSavedSearches(
+      1,
+      user.userProfile
+    );
 
     expect(searches2.length).toBe(0);
 
     await deleteUser(user.userProfile.id);
+  });
+
+  it("should not find search for this user to delete it", async () => {
+    let user;
+    try {
+      user = await register(
+        "testUnit2",
+        "testUnit2@unit.testUnit",
+        "testUnit2"
+      );
+
+      const search = await savedSearchService.deleteSavedSearch(
+        "1testunit",
+        user.userProfile
+      );
+    } catch (error) {
+      await deleteUser(user.userProfile.id);
+      expect(error.message).toBe("Saved search not found for this user");
+    }
   });
 });
