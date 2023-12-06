@@ -18,6 +18,8 @@ export async function getGeoloc(
       `https://nominatim.openstreetmap.org/search?q=${address[i]}&format=jsonv2`
     );
 
+    if(response.status !== 200) throw new HttpException(400, "Can't access to this link");
+
     if (response.data.length > 0) {
       geoloc.push({
         address: address[i],
@@ -65,6 +67,8 @@ export async function getGeolocLink(link: string) {
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
     },
   });
+
+  if(response.status !== 200) throw new HttpException(400, "Can't access to this link");
 
   const geolocInfos = scrapGeolocInfo(response.data);
   
