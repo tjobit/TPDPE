@@ -7,6 +7,7 @@ export function getRouter() {
     const router = Router();
     
     router.get('/geoloc/:dpe/:ges/:zipcode/:surface', authMiddleware, geolocController.getGeoloc, errorMiddleware);
+    router.post('/geoloc', authMiddleware, geolocController.getGeolocLink, errorMiddleware);
     
     return router;
 }

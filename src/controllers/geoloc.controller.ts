@@ -45,3 +45,34 @@ export async function getGeoloc(
     next(error);
   }
 }
+
+export async function getGeolocLink(
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const { link } = req.body;
+
+    controllerUtils.throwIfNotString(link);
+
+    if(!link.includes("www.immonot.com")){
+      res.status(400).json("Link must be from www.immonot.com");
+    };
+
+    const geolocInfos = await geolocService.getGeolocLink(link);
+
+    await saveSearch(
+      geolocInfos.dpe,
+      geolocInfos.ges,
+      parseInt(geolocInfos.zipcode),
+      parseInt(geolocInfos.surface),
+      geolocInfos.geoloc,
+      req.user
+    );
+
+    res.status(200).json(geolocInfos.geoloc);
+  } catch (error) {
+    next(error);
+  }
+}

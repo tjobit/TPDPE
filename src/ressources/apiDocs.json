@@ -455,6 +455,66 @@
           }
         }
       }
+    },
+    "/geoloc": {
+      "post": {
+        "tags": ["Geoloc"],
+        "summary": "Get geoloc with link",
+        "description": "retrieve address, lat and lon with an address link from www.immonot.com",
+        "operationId": "getGeolocLink",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "access token of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "link",
+            "in": "body",
+            "description": "link to rent or buy a house",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "latitude": {
+                        "type": "string"
+                      },
+                      "longitude": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Link must be from www.immonot.com"
+          },
+          "204": {
+            "description": "No geoloc found"
+          }
+        }
+      }
     }
   },
   "components": {

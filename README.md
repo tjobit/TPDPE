@@ -39,3 +39,29 @@ npm run test
 │   ├── utils # Utils for common functions
 │   └── server.ts # App entry point
 |── .env # Environment variables
+
+```
+
+## Goals
+
+### Backend
+
+- [x] Register
+- [x] Login
+- [x] Refresh token
+- [x] Search with dpe, ges, zip code, surface
+- [x] Save search for user
+- [x] Get user searches
+- [x] Delete user search
+- [x] Re run user search
+- [x] Swagger
+- [x] Tests (without mocking, mockingoose not working with ts, no success with jest.mock or memory mongo db)
+- [x] Scrapping on www.immonot.com
+- [ ] Batch script
+
+### Frontend
+
+- [x] Register
+- [x] Login
+- [x] Search with dpe, ges, zip code, surface
+- [x] Display on map with markers

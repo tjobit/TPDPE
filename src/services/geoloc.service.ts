@@ -1,12 +1,13 @@
 import { HttpException } from "../exceptions/HttpException";
 import Dep from "../models/dep";
 import axios from "axios";
+import { scrapGeolocInfo } from "../utils/geoloc.utils";
 
 export async function getGeoloc(
   dpe: string,
   ges: string,
   zipcode: number,
-  surface: number,
+  surface: number
 ) {
   const address = await getAddress(dpe, ges, zipcode, surface);
 
@@ -37,7 +38,7 @@ export async function getAddress(
   zipcode: number,
   surface: number
 ) {
-  const dep = await Dep.find({    
+  const dep = await Dep.find({
     $and: [
       { Etiquette_DPE: dpe },
       { Etiquette_GES: ges },
@@ -55,4 +56,32 @@ export async function getAddress(
   });
 
   return address;
+}
+
+export async function getGeolocLink(link: string) {
+  const response = await axios.get(link, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    },
+  });
+
+  const geolocInfos = scrapGeolocInfo(response.data);
+  
+  const geoloc = await getGeoloc(
+    geolocInfos.dpe,
+    geolocInfos.ges,
+    parseInt(geolocInfos.zipcode),
+    parseInt(geolocInfos.surface)
+  );
+
+  console.log(geoloc)
+
+  return {
+    dpe: geolocInfos.dpe,
+    ges: geolocInfos.ges,
+    zipcode: geolocInfos.zipcode,
+    surface: geolocInfos.surface,
+    geoloc
+  };
 }
