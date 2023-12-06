@@ -65,3 +65,5 @@ npm run test
 - [x] Login
 - [x] Search with dpe, ges, zip code, surface
 - [x] Display on map with markers
+- [x] User page with user profile
+- [x] User page with user searches (did not have time to implement the delete and re run)

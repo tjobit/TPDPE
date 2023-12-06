@@ -176,8 +176,49 @@
             "description": "User not found"
           }
         }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "get user profile",
+        "description": "Get user email and name",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "access token of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
       }
     },
+
     "/savedSearches/{page}": {
       "get": {
         "tags": ["SavedSearch"],
