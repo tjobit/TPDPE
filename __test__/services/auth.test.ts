@@ -92,4 +92,19 @@ describe("Test auth service", () => {
       expect(error.message).toBe("Incorrect password");
     }
   });
+
+  it("should be able to refresh a token", async () => {
+    const user = await authService.register(
+      "testUnit",
+      "testUnit@unit.testUnit",
+      "testUnit"
+    );
+
+    const newTokens = authService.refreshAuthToken(user.refreshToken);
+
+    expect(newTokens).toHaveProperty("accessToken");
+    expect(newTokens).toHaveProperty("refreshToken");
+
+    await deleteUser(user.userProfile.id);
+  });
 });

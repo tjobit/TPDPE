@@ -9,6 +9,10 @@ export function createUserToken(user): UserTokens {
   const accessKey = process.env.ACCESS_KEY_SECRET;
   const refreshKey = process.env.REFRESH_KEY_SECRET;
 
+  if(user.exp) {
+    delete user.exp;
+  }
+
   const accessToken = jwt.sign(user, accessKey, {
     expiresIn: ONE_DAY_IN_SECONDS,
   });
